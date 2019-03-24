@@ -34,7 +34,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes "Main-Class": "me.yuanbin.KafkaStreamFilter"
+        attributes "Main-Class": "me.yuanbin.KafkaStreamRouter"
     }
 }
 
