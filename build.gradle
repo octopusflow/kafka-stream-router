@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+group 'me.yuanbin'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    junitVersion = "4.12"
+    slf4jVersion = "1.7.25"
+    kafkaVersion = "2.1.0"
+    zeusJdkCommonVersion = "0.0.1-SNAPSHOT"
+}
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    implementation "org.apache.kafka:kafka-streams:$kafkaVersion"
+    implementation "org.apache.kafka:kafka-clients:$kafkaVersion"
+
+    implementation "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    implementation "me.yuanbin:zeus-jdk-common:$zeusJdkCommonVersion"
+    testImplementation "junit:junit:$junitVersion"
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "me.yuanbin.KafkaStreamFilter"
+    }
+}
+
+shadowJar {
+    baseName = 'app'
+    classifier = null
+    version = null
+}
+
+project.tasks.assemble.dependsOn project.tasks.shadowJar
