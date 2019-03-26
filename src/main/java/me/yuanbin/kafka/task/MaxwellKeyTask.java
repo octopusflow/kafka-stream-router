@@ -27,7 +27,7 @@ public class MaxwellKeyTask extends AbstractTask {
     private final Produced<JsonNode, byte[]> produced = Produced.with(jsonSerde, Serdes.ByteArray());
 
     @Override
-    public void init(StreamsBuilder builder) {
+    public void build(StreamsBuilder builder) {
         final KStream<JsonNode, byte[]> sourceStream = builder.stream(sourceTopics, consumed);
 
         for (Map.Entry<String, ConfigValue> entry : sinkTopicsConfig.entrySet()) {

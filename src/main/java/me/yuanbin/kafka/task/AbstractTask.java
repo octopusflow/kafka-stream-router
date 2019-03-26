@@ -22,10 +22,16 @@ public abstract class AbstractTask {
     protected static final String VALUE_FILTER_REGEX = "value.filter_regex";
 
     private static final Config appConfig = AppConfigFactory.load();
-    private final Config taskConfig = appConfig.getConfig(this.getClass().getSimpleName());
+    protected final Config taskConfig = appConfig.getConfig("task." + this.getClass().getSimpleName());
     protected final List<String> sourceTopics = getStringList(taskConfig, SOURCE_TOPICS);
     protected final Config sinkTopicsConfig = taskConfig.getConfig(SINK_TOPICS);
 
+    /**
+     * get string list from given path
+     * @param config TypesafeConfig instance
+     * @param path relative path in config
+     * @return list of string
+     */
     protected List<String> getStringList(Config config, String path) {
         List<String> sourceTopics = ImmutableList.of();
         if (taskConfig.hasPath(path)) {
@@ -39,14 +45,23 @@ public abstract class AbstractTask {
         return sourceTopics;
     }
 
+    /**
+     * get regex string from given path,
+     * .* by default if empty, concatenate list of strings
+     * @param config TypesafeConfig instance
+     * @param path relative path in config
+     * @return regex string
+     */
     protected String getRegex(Config config, String path) {
         List<String> regexList = getStringList(config, path);
-        if (regexList.size() <= 1) {
+        if (regexList.size() == 0) {
+            return ".*";
+        } else if (regexList.size() == 1) {
             return regexList.get(0);
         } else {
             return regexList.stream().collect(Collectors.joining("|", "(", ")"));
         }
     }
 
-    public abstract void init(StreamsBuilder builder);
+    public abstract void build(StreamsBuilder builder);
 }
