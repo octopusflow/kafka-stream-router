@@ -13,7 +13,7 @@ ext {
     junitVersion = "4.12"
     slf4jVersion = "1.7.25"
     kafkaVersion = "2.1.0"
-    zeusJdkCommonVersion = "0.0.1-SNAPSHOT"
+    zeusJdkCommonVersion = "0.0.3-SNAPSHOT"
 }
 
 repositories {
